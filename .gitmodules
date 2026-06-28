@@ -1,0 +1,3 @@
+[submodule "libpqp"]
+	path = libpqp
+	url = git@github.com:szlldm/libpqp.git
