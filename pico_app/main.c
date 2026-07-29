@@ -20,6 +20,9 @@
 
 #define TTY_PORT	(31)
 
+#define LED		(22)
+// alternative: #define LED	PICO_DEFAULT_LED_PIN
+
 void main_core1( void )
 {
 	// do not write code before this function call!
@@ -30,28 +33,12 @@ void main_core1( void )
 	uint8_t dst_addr, src_addr,dst_port, src_port;
 	pqp_prio_t priority;
 	
-	/*
-	gpio_init(PICO_DEFAULT_LED_PIN);
-	gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
-	*/
+	gpio_init(LED);
+	gpio_set_dir(LED, GPIO_OUT);
+	gpio_put(LED, 0);
 	
 	while (1)
 	{
-		/*
-		gpio_put(PICO_DEFAULT_LED_PIN, 1);
-		sleep_ms(250);
-		gpio_put(PICO_DEFAULT_LED_PIN, 0);
-		sleep_ms(250);
-		gpio_put(PICO_DEFAULT_LED_PIN, 1);
-		sleep_ms(250);
-		gpio_put(PICO_DEFAULT_LED_PIN, 0);
-		sleep_ms(250);
-		gpio_put(PICO_DEFAULT_LED_PIN, 1);
-		sleep_ms(750);
-		gpio_put(PICO_DEFAULT_LED_PIN, 0);
-		sleep_ms(500);
-		*/
-		
 		int rxlen = pqp_recv( rdata, &dst_addr , &src_addr, &dst_port, &src_port, &priority );
 		if (rxlen >= 0)
 		{
@@ -65,16 +52,33 @@ void main_core1( void )
 						switch(rdata[0])
 						{
 							case 'h':
-								txlen = sprintf(tdata,"h help\n");
+								txlen = sprintf(tdata,"h help\n1 LED on\n0 LED off\n");
+								break;
+							case '0':
+								gpio_put(LED, 0);
+								txlen=sprintf(tdata, "LED=0\n");
+								break;
+							case '1':
+								gpio_put(LED, 1);
+								txlen=sprintf(tdata, "LED=1\n");
 								break;
 							default:
 								break;
 						}
 					}
 				} else
+				if (dst_port == 55)
+				{
+					if (rxlen >= 1)
+					{
+						int led_state = (rdata[0] == '1') ? 1:0;
+						gpio_put(LED, led_state);
+						txlen=sprintf(tdata, "LED=%d\n", led_state);
+					}
+				} else
 				if (dst_port == 100)
 				{
-					txlen = sprintf(tdata,"Hello world!\n");
+					txlen = sprintf(tdata, "Hello world!\n");
 				}
 				
 				if (txlen >= 0)

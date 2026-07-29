@@ -18,8 +18,8 @@
 #include "pqp_addresses.h"
 
 // use define PQP_COMx, PQP_OBCx for MY_BASE_ADDRESS !
-#define MY_BASE_ADDRESS		(42)					// my PQP address is 42 and 43 for the redundant part
-//#define ADDRESS_MODIFIER_ID_PIN	(19)
+#define MY_BASE_ADDRESS		(36)					// my PQP address is 36 and 37 for the redundant part
+#define ADDRESS_MODIFIER_ID_PIN	(19)
 
 // optional parameter override:
 // #define PQP_NUMBER_OF_TX_BUFFERS		(2)
@@ -30,7 +30,7 @@
 
 // default interface is NULL
 // additional interfaces:
-#define LIBPQP_HAS_CAN1
+//#define LIBPQP_HAS_CAN1
 #define LIBPQP_HAS_HDUPLEX_UART1
 //#define LIBPQP_HAS_I2C1
 //#define LIBPQP_HAS_CAN2

@@ -10,6 +10,7 @@ APPS=(
 	"transfer_test"
 	"tty"
 	"upload_fw"
+	"led_control"
 )
 
 mkdir -p build

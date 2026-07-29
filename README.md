@@ -14,6 +14,10 @@ When this project is used together with the AGPLv3‑licensed version of the lib
 
 Users who obtain a commercial license for the library may instead use this project under the GPLv3 terms.
 
+## Example project
+
+[See tutorial how to use a minimal setup.](./Example_project.md)
+
 ## Components
 
 ### initialize.sh
