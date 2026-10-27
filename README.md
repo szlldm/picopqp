@@ -30,12 +30,6 @@ This script shall be run as the first step. It initializes the libpqp subreposit
 sudo apt install cmake python3 build-essential gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
 ```
 
-#### Required manual changes
-
-On recent systems (e.g. Ubuntu 26.04) after running initialize.sh, pico-sdk/tools/pioasm/CMakeLists.txt has to be edited:
-
-`cmake_minimum_required(VERSION 3.4)` has to be changed to `cmake_minimum_required(VERSION 3.5)`
-
 ### can2040
 
 This folder contains a selected version of the [can2040](https://github.com/KevinOConnor/can2040) project, that is a software CAN bus implementation for Raspberry Pi RP2040 and RP2350 micro-controllers.
