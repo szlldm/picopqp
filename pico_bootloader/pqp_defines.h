@@ -18,7 +18,7 @@
 #include "pqp_addresses.h"
 
 // use define PQP_COMx, PQP_OBCx for MY_BASE_ADDRESS !
-#define MY_BASE_ADDRESS		(36)					// my PQP address is 36 and 37 for the redundant part
+#define MY_BASE_ADDRESS		(46)					// my PQP address is 46 and 47 for the redundant part
 #define ADDRESS_MODIFIER_ID_PIN	(19)
 
 // optional parameter override:

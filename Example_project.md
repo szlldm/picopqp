@@ -72,17 +72,17 @@ In case the bridge the gnd app provides a text based menu. Here select the HDUAR
 
 After the above steps are performed, test that the subsystem boards are reachable, using the **ping** gnd app:
 
-`./ping 36`
+`./ping 46`
 
-`./ping 37`
+`./ping 47`
 
 If you prefer text based addresses instead of numeric, add these to **gnd_app_base.c / convert_arg_to_addr** function, then rebuild the gnd apps.
 
 If both subsystem Pico board is reachable, do transfer test with maximum payload (264 bytes):
 
-`./transfer_test 36 264`
+`./transfer_test 46 264`
 
-`./transfer_test 37 264`
+`./transfer_test 47 264`
 
 ## Create your own firmware
 
@@ -92,17 +92,17 @@ Build the application using the **build.sh** script.
 
 In the build folder the **pico_app.bin** has to be uploaded using the **upload_fw** gnd app. **IMPORTANT**: do not use the .uf2 file.
 
-`./upload_fw 36 relative/or/absolute/path/to/pico_app.bin -a`
+`./upload_fw 46 relative/or/absolute/path/to/pico_app.bin -a`
 
 The `-a` switch is optional, but recommended, if the flash does not store anything else above the firmware.
 
 If the upload process is finished, and the uploader indicates successful CRC check, the uploaded firmware can be started using the **run_fw** gnd app.
 
-`./run_fw 36`
+`./run_fw 46`
 
 The successful firmware star can be tested using
 
-`./ping 36`
+`./ping 46`
 
 ## Remote control
 
@@ -112,7 +112,7 @@ Using **tty** the control is interactive. Enter *h* for the help menu.
 
 The **led_control** is an example for custom gnd apps. The LED control parameter is passed as a command parameter:
 
-`./led_control 36 0`
+`./led_control 46 0`
 
-`./led_control 36 1`
+`./led_control 46 1`
 

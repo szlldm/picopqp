@@ -11,6 +11,7 @@ APPS=(
 	"tty"
 	"upload_fw"
 	"led_control"
+	"read_ad"
 )
 
 mkdir -p build

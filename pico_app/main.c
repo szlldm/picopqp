@@ -17,11 +17,29 @@
 #include "pico/multicore.h"
 #include "libpqp/libpqp.h"
 #include "libpqp_hws.h"
+#include "hardware/adc.h"
 
 #define TTY_PORT	(31)
 
 #define LED		(22)
-// alternative: #define LED	PICO_DEFAULT_LED_PIN
+
+uint16_t ad_values[4];
+
+bool repeating_timer_callback(__unused struct repeating_timer *t)
+{
+	// blinking on-board LED
+	gpio_put(PICO_DEFAULT_LED_PIN, !gpio_get(PICO_DEFAULT_LED_PIN));
+	return true;
+}
+
+void read_ad(void)
+{
+	for(int i=26; i<26+4; i++)
+	{
+		adc_select_input(i-26);
+		ad_values[i-26]=adc_read();
+	}
+}
 
 void main_core1( void )
 {
@@ -37,6 +55,21 @@ void main_core1( void )
 	gpio_set_dir(LED, GPIO_OUT);
 	gpio_put(LED, 0);
 	
+	gpio_init(PICO_DEFAULT_LED_PIN);
+	gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+	gpio_put(PICO_DEFAULT_LED_PIN, 0);
+	
+	struct repeating_timer timer;
+	add_repeating_timer_ms(-500, repeating_timer_callback, NULL, &timer);
+
+	adc_init();
+
+	for(int i=26; i<26+4; i++)
+	{
+		adc_gpio_init(i);
+	}
+
+
 	while (1)
 	{
 		int rxlen = pqp_recv( rdata, &dst_addr , &src_addr, &dst_port, &src_port, &priority );
@@ -52,7 +85,7 @@ void main_core1( void )
 						switch(rdata[0])
 						{
 							case 'h':
-								txlen = sprintf(tdata,"h help\n1 LED on\n0 LED off\n");
+								txlen = sprintf(tdata,"h help\n1 LED on\n0 LED off\na read ADC\n");
 								break;
 							case '0':
 								gpio_put(LED, 0);
@@ -61,6 +94,10 @@ void main_core1( void )
 							case '1':
 								gpio_put(LED, 1);
 								txlen=sprintf(tdata, "LED=1\n");
+								break;
+							case 'a':
+								read_ad();
+								txlen=sprintf(tdata, "%04d,%04d,%04d,%04d\n",ad_values[0],ad_values[1],ad_values[2],ad_values[3]);
 								break;
 							default:
 								break;
@@ -75,6 +112,11 @@ void main_core1( void )
 						gpio_put(LED, led_state);
 						txlen=sprintf(tdata, "LED=%d\n", led_state);
 					}
+				} else
+				if (dst_port == 56)
+				{
+					read_ad();
+					txlen=sprintf(tdata, "%04d,%04d,%04d,%04d\n",ad_values[0],ad_values[1],ad_values[2],ad_values[3]);
 				} else
 				if (dst_port == 100)
 				{

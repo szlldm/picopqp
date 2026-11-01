@@ -61,7 +61,7 @@ target_sources(pico_app PRIVATE app.c main.c libpqp_foreign.c ${LIBPQP_SOURCES} 
 pico_set_linker_script(pico_app ${CMAKE_CURRENT_SOURCE_DIR}/app_memmap.ld)
 
 # Pull in our pico_stdlib which pulls in commonly used features
-target_link_libraries(pico_app pico_stdlib pico_multicore hardware_dma hardware_uart hardware_flash hardware_irq hardware_watchdog hardware_pwm hardware_exception pico_i2c_slave hardware_i2c)
+target_link_libraries(pico_app pico_stdlib pico_multicore hardware_dma hardware_uart hardware_flash hardware_irq hardware_watchdog hardware_pwm hardware_exception pico_i2c_slave hardware_i2c hardware_adc)
 pico_add_extra_outputs(pico_app)
 
 # CAN2040 required includes:
